@@ -197,8 +197,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
-    // padding: $containerSpace;
-    padding: 15px;
+    padding: $containerSpace;
     box-shadow: 0 1px 2px 1px rgba($color: #000000, $alpha: 0.1),
       0 1.5px 1px rgba($color: #000000, $alpha: 0.18),
       0 0 1px rgba($color: #000000, $alpha: 0.1);
