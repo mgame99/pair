@@ -65,7 +65,11 @@
             <li>
               <div class="nav__item">
                 <div class="nav__title">Cards size:</div>
-                <span :class="{ active: !sizeCards.isScreen }">Auto</span>
+                <span
+                  class="nav__item-name"
+                  :class="{ active: !sizeCards.isScreen }"
+                  >Auto</span
+                >
                 <Checkbox
                   :checkboxId="sizeCards.id"
                   :checkboxName="sizeCards.id"
@@ -74,28 +78,38 @@
                   v-model="sizeCards.isScreen"
                   @update:modelValue="sizeChanger"
                 />
-                <span :class="{ active: sizeCards.isScreen }">Screen</span>
+                <span
+                  class="nav__item-name"
+                  :class="{ active: sizeCards.isScreen }"
+                  >Screen</span
+                >
               </div>
             </li>
             <li>
               <div class="nav__item">
                 <div class="nav__title">Language:</div>
-                <span :class="{ active: !lang.isRus }">Eng</span>
+                <span class="nav__item-name" :class="{ active: !lang.isRus }"
+                  >Eng</span
+                >
                 <Checkbox
                   :checkboxId="lang.id"
                   :checkboxName="lang.id"
                   :firstImage="lang.firstImage"
                   :secondImage="lang.secondImage"
-                  v-model="lang.isScreen"
-                  @update:modelValue="sizeChanger"
+                  v-model="lang.isRus"
+                  @update:modelValue="langChanger"
                 />
-                <span :class="{ active: lang.isRus }">Rus</span>
+                <span class="nav__item-name" :class="{ active: lang.isRus }"
+                  >Rus</span
+                >
               </div>
             </li>
             <li>
               <div class="nav__item">
                 <div class="nav__title">Theme:</div>
-                <span :class="{ active: !theme.isDark }">Light</span>
+                <span class="nav__item-name" :class="{ active: !theme.isDark }"
+                  >Light</span
+                >
                 <Checkbox
                   :isTheme="true"
                   :checkboxId="theme.id"
@@ -105,7 +119,9 @@
                   :secondImage="theme.secondImage"
                   @update:modelValue="themeChanger"
                 />
-                <span :class="{ active: theme.isDark }">Dark</span>
+                <span class="nav__item-name" :class="{ active: theme.isDark }"
+                  >Dark</span
+                >
               </div>
             </li>
           </ul>
@@ -138,10 +154,10 @@ export default {
         secondImage: require("@/assets/images/full-size.svg"),
       },
       lang: {
-        id: "size-cards",
+        id: "lang",
         isRus: false,
-        firstImage: require("@/assets/images/auto-size.svg"),
-        secondImage: require("@/assets/images/full-size.svg"),
+        firstImage: require("@/assets/images/en.svg"),
+        secondImage: require("@/assets/images/ru.svg"),
       },
       isNav: false,
       isSettings: false,
@@ -172,6 +188,15 @@ export default {
         localStorage.setItem("size", "auto");
       }
     },
+    langChanger() {
+      if (this.lang.isRus) {
+        document.documentElement.setAttribute("data-lang", "ru");
+        localStorage.setItem("lang", "ru");
+      } else {
+        document.documentElement.setAttribute("data-lang", "en");
+        localStorage.setItem("lang", "en");
+      }
+    },
   },
   computed: {
     currentTheme() {
@@ -180,17 +205,23 @@ export default {
     currentSize() {
       return localStorage.getItem("size") || "auto";
     },
+    currentLang() {
+      return localStorage.getItem("lang") || "en";
+    },
   },
   created() {
     document.documentElement.setAttribute("data-theme", this.currentTheme);
     this.theme.isDark = this.currentTheme === "light" ? "false" : true;
     document.documentElement.setAttribute("data-size", this.currentSize);
     this.sizeCards.isScreen = this.currentSize === "auto" ? "false" : true;
+    document.documentElement.setAttribute("data-lang", this.currentLang);
+    this.lang.isRus = this.currentLang === "en" ? "false" : true;
   },
 };
 </script>
 
 <style lang="scss">
+@import "@/assets/styles/_vars.scss";
 .header {
   &__inner {
     display: flex;
@@ -343,6 +374,21 @@ export default {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    &-name {
+      flex: 0 0 50%;
+      max-width: calc(50% - 22.5px);
+      word-break: break-word;
+      text-align: center;
+      &.active {
+        text-decoration: underline;
+      }
+      &:first-of-type {
+        text-align: left;
+      }
+      &:last-of-type {
+        text-align: right;
+      }
+    }
   }
   &__title {
     width: 100%;

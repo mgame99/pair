@@ -1,12 +1,16 @@
 <template>
   <Header />
+  <div class="lvl" :class="{ active: isStopAnimate }">
+    <div class="lvl__inner">Level{{ lvl }}</div>
+  </div>
+  <p>{{ $t("main.welcome", { company: "Lokalise" }) }}</p>
   <Cards
     :items="cards"
     @showCard="showCard"
     :isAnimate="isAnimate"
     :isStopAnimate="isStopAnimate"
   />
-  <!-- <button @click="next()">sa</button> -->
+  <button @click="next()">sa</button>
 </template>
 
 <script>
@@ -70,7 +74,10 @@ export default {
     };
   },
   mounted() {
-    this.clone(this.fruits);
+    this.lvl = this.currentLvl;
+    this.$nextTick(() => {
+      this.clone(this.fruits);
+    });
   },
   methods: {
     shuffle(arr) {
@@ -110,6 +117,7 @@ export default {
       this.isAnimate = true;
       this.isStopAnimate = true;
       this.lvl += 1;
+      localStorage.setItem("lvl", this.lvl);
       this.clone(this.fruits);
       this.detectedCards = 0;
       this.shuffle(this.cards);
@@ -128,7 +136,6 @@ export default {
         if (this.activeCards !== 1) {
           this.activeCards += 1;
           this.prevCard = idx;
-          console.log(2);
         } else if (this.cards[this.prevCard].name === this.cards[idx].name) {
           // await this.wait(this.animateShow);
           this.cards[idx].isActive = false;
@@ -149,7 +156,11 @@ export default {
         }
         this.isAnimate = false;
       }
-      // console.log(this.prevCard);
+    },
+  },
+  computed: {
+    currentLvl() {
+      return Number(localStorage.getItem("lvl")) || 1;
     },
   },
 };
@@ -158,4 +169,68 @@ export default {
 <style lang="scss">
 @import "/assets/styles/base.scss";
 // @import url(./assets/styles/base.scss);
+.lvl {
+  position: fixed;
+  // top: 25px;
+  // left: 50%;
+  z-index: 99;
+  // transform: translateX(-50%);
+  animation: lvlStopAnimate 0.15s ease-out 0s 1 forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__inner {
+    background: #fff;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  &.active {
+    animation: lvlNextAnimate 0.3s ease-in 0s 1 forwards;
+  }
+}
+@keyframes lvlNextAnimate {
+  0% {
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20vmin;
+  }
+  35% {
+    background-color: rgba($color: #327f7f, $alpha: 0.6);
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    background-color: rgba($color: #327f7f, $alpha: 0.3);
+  }
+}
+@keyframes lvlStopAnimate {
+  10% {
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 25%;
+    background-color: transparent;
+  }
+  25% {
+    width: 50%;
+    height: 50%;
+  }
+  50% {
+    width: 25%;
+    height: 25%;
+  }
+  100% {
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 </style>

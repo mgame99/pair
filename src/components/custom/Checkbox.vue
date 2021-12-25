@@ -142,10 +142,11 @@ export default {
     transition: background-color 0.3s ease-out;
     z-index: 1;
     border-radius: 30px;
-    border: 1px solid #8ba9a9;
-    background-color: #b9b9b9;
+    border: 1.6px solid #d74141;
+    background-color: #f37777;
+    box-shadow: inset 0 0 6px 2px #d74141;
     &--theme {
-      background: linear-gradient(#3794d7, #68b9f4);
+      background: linear-gradient(#83868c, #6a6f7c);
       border-color: #566276;
       box-shadow: inset 0px 1px 6px 0px #3b6689;
     }
