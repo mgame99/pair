@@ -4,6 +4,7 @@
     :class="{
       'cards--animate': isAnimate,
       'cards--stop-animate': isStopAnimate,
+      'cards--unfull': items.length < 7,
     }"
   >
     <!-- :style="{ '--count': items.length }" -->
@@ -155,11 +156,21 @@ export default {
     width: 100%;
     height: 100%;
   }
+  .cards--unfull {
+    .cards__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 }
 @media screen and (min-width: 900px) {
   [data-size="full"] {
     .cards__list {
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+    .cards--unfull {
+      .cards__list {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
     }
   }
 }
