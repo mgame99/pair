@@ -1,5 +1,4 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/pair/" : "/",
   css: {
     loaderOptions: {
       sass: {
@@ -21,7 +20,7 @@ module.exports = {
   },
 };
 module.exports = {
-  // publicPath: process.env.NODE_ENV === "production" ? "/pair/" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? "/pair/" : "/",
   // pluginOptions: {
   //   i18n: {
   //     locale: "en",
