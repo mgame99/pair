@@ -2,13 +2,8 @@
   <header class="header">
     <div class="header__inner">
       <div class="header__logo">
-        <a href="#" class="logo"><img src="../../assets/images/logo.png" /></a>
+        <a href="#" class="logo"><img src="../../assets/images/logo.svg" /></a>
       </div>
-      <!-- <div class="burger" @click="$emit('showNav')" :class="{ open: isNav }">
-        <span class="burger__line--1"></span>
-        <span class="burger__line--2"></span>
-        <span class="burger__line--3"></span>
-      </div> -->
       <div class="burger" @click="toggleNav" :class="{ open: isNav }">
         <span class="burger__line--1"></span>
         <span class="burger__line--2"></span>
@@ -19,11 +14,13 @@
       <nav class="nav" v-show="isNav">
         <ul class="nav__list" id="main-nav">
           <li>
-            <button class="btn nav__item"><span>Rules</span></button>
+            <button class="btn nav__item">
+              <span>{{ $t("rules") }}</span>
+            </button>
           </li>
           <li>
             <button class="btn nav__item" @click="toggleSettings">
-              <span>Settings</span>
+              <span>{{ $t("settings") }}</span>
               <svg
                 class="arrow"
                 viewBox="0 0 20 20"
@@ -36,10 +33,17 @@
             </button>
           </li>
           <li>
-            <button class="btn nav__item"><span>Feedback</span></button>
+            <button class="btn nav__item">
+              <span>{{ $t("feedback") }}</span>
+            </button>
           </li>
           <li>
             <hr class="divider" />
+          </li>
+          <li>
+            <button @click="$emit('reset')" class="btn nav__item">
+              <span>{{ $t("reset") }}</span>
+            </button>
           </li>
         </ul>
         <transition name="translate">
@@ -59,16 +63,16 @@
                     d="M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z"
                   ></path>
                 </svg>
-                <span>Settings</span>
+                <span>{{ $t("settings") }}</span>
               </button>
             </li>
             <li>
               <div class="nav__item">
-                <div class="nav__title">Cards size:</div>
+                <div class="nav__title">{{ $t("settingsItems.size") }}:</div>
                 <span
                   class="nav__item-name"
                   :class="{ active: !sizeCards.isScreen }"
-                  >Auto</span
+                  >{{ $t("settingsItems.auto") }}</span
                 >
                 <Checkbox
                   :checkboxId="sizeCards.id"
@@ -81,13 +85,13 @@
                 <span
                   class="nav__item-name"
                   :class="{ active: sizeCards.isScreen }"
-                  >Screen</span
+                  >{{ $t("settingsItems.screen") }}</span
                 >
               </div>
             </li>
             <li>
               <div class="nav__item">
-                <div class="nav__title">Language:</div>
+                <div class="nav__title">{{ $t("settingsItems.lang") }}:</div>
                 <span class="nav__item-name" :class="{ active: !lang.isRus }"
                   >Eng</span
                 >
@@ -100,15 +104,17 @@
                   @update:modelValue="langChanger"
                 />
                 <span class="nav__item-name" :class="{ active: lang.isRus }"
-                  >Rus</span
+                  >Рус</span
                 >
               </div>
             </li>
             <li>
               <div class="nav__item">
-                <div class="nav__title">Theme:</div>
-                <span class="nav__item-name" :class="{ active: !theme.isDark }"
-                  >Light</span
+                <div class="nav__title">{{ $t("settingsItems.theme") }}:</div>
+                <span
+                  class="nav__item-name"
+                  :class="{ active: !theme.isDark }"
+                  >{{ $t("settingsItems.light") }}</span
                 >
                 <Checkbox
                   :isTheme="true"
@@ -119,8 +125,10 @@
                   :secondImage="theme.secondImage"
                   @update:modelValue="themeChanger"
                 />
-                <span class="nav__item-name" :class="{ active: theme.isDark }"
-                  >Dark</span
+                <span
+                  class="nav__item-name"
+                  :class="{ active: theme.isDark }"
+                  >{{ $t("settingsItems.dark") }}</span
                 >
               </div>
             </li>
@@ -135,6 +143,7 @@
 import Checkbox from "../custom/Checkbox";
 export default {
   name: "Header",
+  emits: ["reset"],
   components: {
     Checkbox,
   },
@@ -164,7 +173,14 @@ export default {
     };
   },
   methods: {
+    stop() {
+      document.body.classList.add("pointer-none");
+      setTimeout(() => {
+        document.body.classList.remove("pointer-none");
+      }, 500);
+    },
     themeChanger() {
+      this.stop();
       if (this.theme.isDark) {
         document.documentElement.setAttribute("data-theme", "dark");
         localStorage.setItem("theme", "dark");
@@ -174,27 +190,41 @@ export default {
       }
     },
     toggleNav() {
+      this.stop();
       this.isNav = !this.isNav;
     },
     toggleSettings() {
+      this.stop();
       this.isSettings = !this.isSettings;
     },
     sizeChanger() {
+      this.stop();
       if (this.sizeCards.isScreen) {
-        document.documentElement.setAttribute("data-size", "full");
-        localStorage.setItem("size", "full");
+        document.documentElement.setAttribute("data-size", "load");
+        setTimeout(() => {
+          document.documentElement.setAttribute("data-size", "full");
+          localStorage.setItem("size", "full");
+        }, 200);
       } else {
-        document.documentElement.setAttribute("data-size", "auto");
-        localStorage.setItem("size", "auto");
+        document.documentElement.setAttribute("data-size", "load");
+        setTimeout(() => {
+          document.documentElement.setAttribute("data-size", "auto");
+          localStorage.setItem("size", "auto");
+        }, 200);
       }
     },
     langChanger() {
+      this.stop();
       if (this.lang.isRus) {
-        document.documentElement.setAttribute("data-lang", "ru");
+        document.documentElement.setAttribute("lang", "ru");
+        //document.documentElement.setAttribute("data-lang", "ru");
         localStorage.setItem("lang", "ru");
+        this.$i18n.locale = "ru";
       } else {
-        document.documentElement.setAttribute("data-lang", "en");
+        //document.documentElement.setAttribute("data-lang", "en");
+        document.documentElement.setAttribute("lang", "en");
         localStorage.setItem("lang", "en");
+        this.$i18n.locale = "en";
       }
     },
   },
@@ -214,8 +244,9 @@ export default {
     this.theme.isDark = this.currentTheme === "light" ? "false" : true;
     document.documentElement.setAttribute("data-size", this.currentSize);
     this.sizeCards.isScreen = this.currentSize === "auto" ? "false" : true;
-    document.documentElement.setAttribute("data-lang", this.currentLang);
+    document.documentElement.setAttribute("lang", this.currentLang);
     this.lang.isRus = this.currentLang === "en" ? "false" : true;
+    this.$i18n.locale = this.currentLang;
   },
 };
 </script>
@@ -228,18 +259,20 @@ export default {
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
-    padding: $containerSpace;
-    box-shadow: 0 1px 2px 1px rgba($color: #000000, $alpha: 0.1),
-      0 1.5px 1px rgba($color: #000000, $alpha: 0.18),
-      0 0 1px rgba($color: #000000, $alpha: 0.1);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    padding: 0 $containerSpace;
+    height: 50px;
+    box-shadow: 0 1px 2px 1px rgba($color: #005a63, $alpha: 0.1),
+      0 1.5px 1px rgba($color: #005a63, $alpha: 0.18),
+      0 0 1px rgba($color: #005a63, $alpha: 0.1);
     position: relative;
     z-index: 99;
   }
 }
 .logo {
   display: inline-flex;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   img {
     width: 100%;
     height: auto;
@@ -253,7 +286,7 @@ export default {
   position: relative;
   z-index: 3;
   .burger__line {
-    background-color: red;
+    background-color: #04cbdf;
     border-radius: 10px;
     display: block;
     height: 4px;
@@ -357,18 +390,20 @@ export default {
 }
 .nav {
   position: fixed;
-  top: 84px;
+  top: 49px;
   right: 0;
-  height: calc(100% - 84px);
+  height: calc((var(--vh, 1vh) * 100) - 50px);
   width: 30%;
   min-width: 300px;
-  background-color: rgb(255, 255, 255);
+  background-color: #fff;
   z-index: 98;
-  font-size: 20px;
+  // font-size: 20px;
+  font-size: 16px;
   overflow: auto;
   padding: 20px 0;
   &__item {
-    padding: 13px 26px;
+    // padding: 13px 26px;
+    padding: 10px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -401,7 +436,7 @@ export default {
       top: 20px;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 40px);
       z-index: 2;
       background-color: inherit;
     }
@@ -409,7 +444,7 @@ export default {
 }
 .translate-enter-active,
 .translate-leave-active {
-  transition: transform 0.5s ease-in;
+  transition: transform 0.5s ease-in !important;
 }
 
 .translate-enter-from,
@@ -419,6 +454,8 @@ export default {
 }
 .arrow {
   width: 20px;
+  fill: rgba(5, 101, 216, 1);
+  transition: fill 0.15s ease;
   &--left {
     transform: rotate(180deg);
   }

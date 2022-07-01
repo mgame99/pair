@@ -1,0 +1,15 @@
+{
+  "lvl": "Level",
+  "rules": "Rules",
+  "feedback": "Feedback",
+  "settings": "Settings",
+  "settingsItems": {
+    "size": "Cards size",
+    "auto": "Auto",
+    "screen": "Full screen",
+    "lang": "Language",
+    "theme": "Theme",
+    "light":"Light",
+    "dark":"Dark"
+  }
+}

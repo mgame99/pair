@@ -6,6 +6,7 @@
       'cards--stop-animate': isStopAnimate,
     }"
   >
+    <!-- :style="{ '--count': items.length }" -->
     <transition-group name="card" tag="ul" class="cards__list">
       <li
         v-for="(item, idx) in items"
@@ -64,6 +65,11 @@ export default {
 <style lang="scss">
 .cards {
   position: relative;
+  height: calc((var(--vh, 1vh) * 100) - 50px);
+  overflow: auto;
+  opacity: 0;
+  transition: opacity 0.3s linear;
+  will-change: opacity;
   &--animate {
     pointer-events: none;
     .crads__block {
@@ -89,20 +95,23 @@ export default {
 .card {
   display: inline-block;
   perspective: 1000px;
-  margin: 10px;
+  margin: 5px;
   border-radius: 16px;
   cursor: pointer;
   // width: 110px;
   // height: 160px;
   transition: transform 0.2s linear;
   &:hover {
-    transform: translate(-1.5px, -5px);
+    // transform: translate(-1.5px, -5px);
+    .card-hide:hover {
+      // box-shadow: 2px 2px 2px 2px rgba($color: #5f3e3e, $alpha: 0.5);
+    }
   }
   &--active,
   &--detected {
     cursor: default;
     &:hover {
-      transform: translateY(0px);
+      // transform: translateY(0px);
     }
     .card__items {
       transform: rotateY(-180deg);
@@ -113,70 +122,55 @@ export default {
   position: relative;
   transform-style: preserve-3d;
   border-radius: inherit;
-  transition: transform 0.5s ease-in;
-  width: 166px;
-  height: 236px;
+  transition: all 0.5s ease-in;
 }
 .card-move {
   transition: transform 0.5s ease-in;
 }
-// .card--active {
-//   opacity: 0.2;
-// }
-// .flip-enter-active,
-// .flip-leave-active {
-//   transition: all 1s ease;
-// }
-// .flip-enter-from,
-// .flip-leave-to {
-//   opacity: 0;
-//   transform: translateY(30px);
-// }
-// .ss {
-//   backface-visibility: visible;
-//   animation-name: flip;
-//   animation-duration: 2s;
-//   animation-timing-function: ease-out;
-//   animation-delay: 0s;
-//   animation-iteration-count: 1;
-//   animation-fill-mode: forwards;
-// }
-// @keyframes flip {
-//   0% {
-//     -webkit-transform: perspective(200px) scaleX(1) translateZ(0)
-//       rotateY(-1turn);
-//     transform: perspective(200px) scaleX(1) translateZ(0) rotateY(-1turn);
-//   }
-//   40% {
-//     -webkit-transform: perspective(200px) scaleX(1) translateZ(150px)
-//       rotateY(-190deg);
-//     transform: perspective(200px) scaleX(1) translateZ(150px) rotateY(-190deg);
-//   }
-//   100% {
-//     -webkit-transform: perspective(200px) scaleX(1) translateZ(150px)
-//       rotateY(-190deg);
-//     transform: perspective(200px) scaleX(1) translateZ(150px) rotateY(-190deg);
-//   }
-//   // 50% {
-//   //   -webkit-transform: perspective(200px) scaleX(1) translateZ(150px)
-//   //     rotateY(-170deg);
-//   //   transform: perspective(200px) scaleX(1) translateZ(150px) rotateY(-170deg);
-//   //   -webkit-animation-timing-function: ease-in;
-//   //   animation-timing-function: ease-in;
-//   // }
-//   // 80% {
-//   //   -webkit-transform: perspective(200px) scale3d(0.95, 0.95, 0.95)
-//   //     translateZ(0) rotateY(0deg);
-//   //   transform: perspective(200px) scale3d(0.95, 0.95, 0.95) translateZ(0)
-//   //     rotateY(0deg);
-//   //   -webkit-animation-timing-function: ease-in;
-//   //   animation-timing-function: ease-in;
-//   // }
-//   // 100% {
-//   //   -webkit-transform: perspective(200px) scaleX(1) translateZ(0) rotateY(0deg);
-//   //   transform: perspective(200px) scaleX(1) translateZ(0) rotateY(0deg);
-//   //   -webkit-animation-timing-function: ease-in;
-//   //   animation-timing-function: ease-in;
-//   // }
-// }
+[data-size="auto"] {
+  .card__items {
+    width: 110px;
+    height: 157px;
+  }
+  .cards {
+    opacity: 1;
+    &__list {
+      text-align: center;
+    }
+  }
+}
+[data-size="full"] {
+  .cards {
+    opacity: 1;
+  }
+  .cards__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    height: calc((var(--vh, 1vh) * 100) - 50px);
+  }
+  .card__items {
+    // height: calc((var(--vh, 1vh) * 100) / 3 - 60px);
+    // width: calc(100vw / 6 - 10px);
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 900px) {
+  [data-size="full"] {
+    .cards__list {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}
+@media screen and (min-width: 500px) {
+  [data-size="auto"] {
+    .card__items {
+      // width: 166px;
+      // height: 236px;
+      width: 156px;
+      height: 226px;
+    }
+  }
+}
 </style>

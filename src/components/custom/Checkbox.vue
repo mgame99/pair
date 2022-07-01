@@ -93,8 +93,8 @@ export default {
       }
       ~ .checkbox__bg {
         &--theme {
-          background: linear-gradient(#5e636c, #474b56);
-          box-shadow: inset 0px 1px 6px 0px #2f3136;
+          background: linear-gradient(rgb(120, 179, 250), rgb(82, 157, 248));
+          box-shadow: inset 0px 1px 6px 0px rgb(81, 137, 206);
         }
       }
     }
@@ -142,13 +142,13 @@ export default {
     transition: background-color 0.3s ease-out;
     z-index: 1;
     border-radius: 30px;
-    border: 1.6px solid #d74141;
-    background-color: #f37777;
-    box-shadow: inset 0 0 6px 2px #d74141;
+    border: 1.6px solid rgb(53, 121, 204);
+    background-color: rgb(109, 172, 249);
+    box-shadow: inset 0 0 6px 2px rgb(53, 121, 204);
     &--theme {
-      background: linear-gradient(#83868c, #6a6f7c);
-      border-color: #566276;
-      box-shadow: inset 0px 1px 6px 0px #3b6689;
+      background: linear-gradient(rgb(109, 172, 249), rgb(88, 153, 231));
+      border-color: rgb(53, 121, 204);
+      box-shadow: inset 0px 1px 6px 0px rgb(53, 121, 204);
     }
   }
 }
